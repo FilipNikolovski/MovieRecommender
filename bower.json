@@ -1,0 +1,23 @@
+{
+  "name": "movie-recommender",
+  "version": "0.0.0",
+  "homepage": "https://github.com/FilipNikolovski/MovieRecommender",
+  "authors": [
+    "Filip Nikolovski <filip.nikol92@gmail.com>"
+  ],
+  "description": "Movie recommender application, using themoviedb.org api",
+  "keywords": [
+    "movies"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4"
+  }
+}
