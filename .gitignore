@@ -3,6 +3,6 @@
 .env
 /.idea
 /bower_components
+/storage
 composer.lock
-public/js/app.min.js
-public/css/app.min.css
+/public
