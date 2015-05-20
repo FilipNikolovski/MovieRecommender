@@ -12,10 +12,6 @@ use GuzzleHttp\Client;
 
 class Movie extends TmdbModel
 {
-    /**
-     * @var string
-     */
-    protected $resource;
 
     public function __construct(Client $client)
     {
