@@ -4,4 +4,5 @@
 /.idea
 /bower_components
 composer.lock
-/public
+public/js/*
+public/css/*

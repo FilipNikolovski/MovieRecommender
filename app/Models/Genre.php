@@ -51,6 +51,7 @@ class Genre extends TmdbModel
      * Get movie list by particular genre, returns a paginated list
      *
      * @param $id
+     * @param int $page
      * @return mixed
      */
     public function findMoviesByGenre($id, $page = 1)
