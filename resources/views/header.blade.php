@@ -23,12 +23,19 @@
                 <li>
                     <a href="#">Search</a>
                 </li>
-                <li>
-                    <a href="#">Login</a>
-                </li>
-                <li>
-                    <a href="#">Register</a>
-                </li>
+                @if(empty($username))
+                    <li>
+                        <a href="#" data-target="#loginModal" data-toggle="modal" >Login</a>
+                    </li>
+                    <li>
+                        <a href="https://www.themoviedb.org/account/signup" target="_blank">Register</a>
+                    </li>
+                @else
+                    <li>
+
+                    </li>
+                @endif
+
             </ul>
         </div>
         <!-- /.navbar-collapse -->

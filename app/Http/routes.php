@@ -10,5 +10,6 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+Route::controller('/auth', 'AuthController');
 
 Route::controller('/', 'HomeController');

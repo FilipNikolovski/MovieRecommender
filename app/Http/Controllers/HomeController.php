@@ -20,6 +20,8 @@ class HomeController extends Controller
 
     public function __construct(Movie $movie)
     {
+        parent::__construct();
+
         $this->movie = $movie;
     }
 

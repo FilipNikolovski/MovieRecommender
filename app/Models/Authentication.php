@@ -73,4 +73,14 @@ class Authentication extends TmdbModel
         return $response->json();
     }
 
+    /**
+     * Check if the user is logged in.
+     *
+     * @return mixed
+     */
+    public function check()
+    {
+        return session()->has('session_id');
+    }
+
 }

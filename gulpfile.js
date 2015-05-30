@@ -32,7 +32,6 @@ var inProduction = ('production' in gulputil.env),
         scripts: [
             bowerPath + 'jquery/dist/jquery.js',
             bowerPath + 'bootstrap/dist/js/bootstrap.js',
-            bowerPath + 'bootstrap/js/*.js',
             'resources/assets/js/**/*.js',
         ],
         styles: [

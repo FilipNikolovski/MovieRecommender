@@ -8,4 +8,12 @@ abstract class Controller extends BaseController {
 
 	use DispatchesCommands, ValidatesRequests;
 
+    public function __construct()
+    {
+        //session()->flush();
+        if(session()->has('session_id')) {
+            view()->share('username', session('username'));
+        }
+    }
+
 }
