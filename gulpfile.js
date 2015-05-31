@@ -32,9 +32,14 @@ var inProduction = ('production' in gulputil.env),
         scripts: [
             bowerPath + 'jquery/dist/jquery.js',
             bowerPath + 'bootstrap/dist/js/bootstrap.js',
-            'resources/assets/js/**/*.js',
+            bowerPath + 'waypoints/lib/noframework.waypoints.js',
+            bowerPath + 'slick.js/slick/slick.js',
+            'resources/assets/js/**/*.js'
         ],
         styles: [
+            bowerPath + 'slick.js/slick/slick.css',
+            bowerPath + 'slick.js/slick/slick-theme.css',
+            bowerPath + 'animate.css/animate.css',
             'resources/assets/less/*.less'
         ],
         fonts: [

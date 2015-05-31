@@ -39,6 +39,51 @@
         </div>
     </div>
     <!-- /.row -->
+    <hr>
 
+    <!-- Top Rated -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="page-header">
+                Top Rated
+            </h2>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-lg-12" id="top-rated">
+            <div class="list-item animated infinite pulse">
+            </div>
+            <div class="list-item animated infinite pulse">
+            </div>
+            <div class="list-item animated infinite pulse">
+            </div>
+            <div class="list-item animated infinite pulse">
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+    <hr>
+
+    <!-- Popular -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="page-header">
+                Popular
+            </h2>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-lg-12" id="popular">
+            <div class="list-item animated infinite pulse">
+            </div>
+            <div class="list-item animated infinite pulse">
+            </div>
+            <div class="list-item animated infinite pulse">
+            </div>
+            <div class="list-item animated infinite pulse">
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
     <hr>
 @endsection

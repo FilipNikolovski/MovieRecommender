@@ -47,4 +47,32 @@ class HomeController extends Controller
         $movies->setPath(url('/'));
         return view('home')->with('movies', $movies);
     }
+
+    public function getTopRated(Request $request)
+    {
+        if($request->ajax()) {
+            try {
+                $topRated = $this->movie->topRated();
+                return response()->json($topRated['results'], 200);
+            }
+            catch(Exception $e) {
+                abort(500);
+            }
+        }
+        abort(401);
+    }
+
+    public function getPopular(Request $request)
+    {
+        if($request->ajax()) {
+            try {
+                $popular = $this->movie->popular();
+                return response()->json($popular['results'], 200);
+            }
+            catch(Exception $e) {
+                abort(500);
+            }
+        }
+        abort(401);
+    }
 }
