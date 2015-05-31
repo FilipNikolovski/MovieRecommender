@@ -9,6 +9,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movie;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class HomeController extends Controller
 {
@@ -25,8 +28,23 @@ class HomeController extends Controller
         $this->movie = $movie;
     }
 
-    public function getIndex()
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function getIndex(Request $request)
     {
-        return view('home');
+        $nowPlaying = [];
+        try {
+            $page = $request->get('page');
+            $page = (isset($page)) ? $page : 1;
+            $nowPlaying = $this->movie->nowPlaying($page);
+        }
+        catch(Exception $e) {
+            abort(404);
+        }
+        $movies = new LengthAwarePaginator($nowPlaying['results'], $nowPlaying['total_results'], 20);
+        $movies->setPath(url('/'));
+        return view('home')->with('movies', $movies);
     }
 }

@@ -16,6 +16,9 @@ use GuzzleHttp\Exception\RequestException;
 class AuthController extends Controller
 {
 
+    /**
+     * @var Authentication
+     */
     protected $auth;
 
     public function __construct(Authentication $auth)
@@ -29,21 +32,7 @@ class AuthController extends Controller
 
     public function postLogin(LoginRequest $request)
     {
-        try {
-            $requestToken = $this->auth->generateToken();
-
-            if (!empty($requestToken['success'])) {
-                $this->auth->validateToken($requestToken['request_token'], $request->get('username'), $request->get('password'));
-
-                $session = $this->auth->generateSession($requestToken['request_token']);
-                session(['session_id' => $session['session_id'], 'username' => $request->get('username')]);
-
-                return response()->json(['message' => 'Login successful', 'session_id' => $session['session_id']], 200);
-            }
-            return response()->json(['message' => 'There was an error. Please try again.'], 500);
-        } catch (RequestException $e) {
-            $res = $e->getResponse();
-            return response()->json(['message' => $res->getReasonPhrase()], $res->getStatusCode());
-        }
+        $res = $this->auth->login($request->get('username'), $request->get('password'));
+        return response()->json($res, $res['status']);
     }
 }

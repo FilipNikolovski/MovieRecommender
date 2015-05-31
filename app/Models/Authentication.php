@@ -10,6 +10,7 @@ namespace App\Models;
 
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class Authentication extends TmdbModel
 {
@@ -81,6 +82,32 @@ class Authentication extends TmdbModel
     public function check()
     {
         return session()->has('session_id');
+    }
+
+    /**
+     *
+     * @param $username
+     * @param $password
+     * @return array
+     */
+    public function login($username, $password)
+    {
+        try {
+            $requestToken = $this->generateToken();
+
+            if (!empty($requestToken['success'])) {
+                $this->validateToken($requestToken['request_token'], $username, $password);
+
+                $session = $this->generateSession($requestToken['request_token']);
+                session(['session_id' => $session['session_id'], 'username' => $username]);
+
+                return ['message' => 'Login successful', 'session_id' => $session['session_id'], 'status' => 200];
+            }
+            return ['message' => 'There was an error. Please try again.', 'status' => 500];
+        } catch (RequestException $e) {
+            $res = $e->getResponse();
+            return ['message' => $res->getReasonPhrase(), 'status' => $res->getStatusCode()];
+        }
     }
 
 }

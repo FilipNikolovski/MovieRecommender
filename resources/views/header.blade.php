@@ -15,13 +15,13 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="#">Movies</a>
+                    <a href="{{url('/movies')}}">Movies</a>
                 </li>
                 <li>
-                    <a href="#">TV Shows</a>
+                    <a href="{{url('/tv-shows')}}">TV Shows</a>
                 </li>
                 <li>
-                    <a href="#">Search</a>
+                    <a href="{{url('/search')}}">Search</a>
                 </li>
                 @if(empty($username))
                     <li>
@@ -32,7 +32,7 @@
                     </li>
                 @else
                     <li>
-
+                        <a href="{{url('/account')}}">Account</a>
                     </li>
                 @endif
 
