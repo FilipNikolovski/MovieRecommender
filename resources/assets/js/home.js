@@ -167,7 +167,7 @@
             }
 
             var imgSrc = (item.backdrop_path !== undefined) ? 'http://image.tmdb.org/t/p/w500' + item.backdrop_path : '';
-            var html = '<div class="list-item">' +
+            var html = '<div class="list-item animated bounceIn">' +
                 '<img class="img-responsive" src="' + imgSrc + '" alt="' + item.title + '">' +
                 '</div>';
 
