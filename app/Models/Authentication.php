@@ -33,6 +33,7 @@ class Authentication extends TmdbModel
     {
         $req = $this->createRequest('GET', $this->url . 'token/new', $this->params, $this->headers);
         $response = $this->client->send($req);
+
         return $response->json();
     }
 
@@ -53,8 +54,9 @@ class Authentication extends TmdbModel
         ];
 
         $this->setQueryParams($data);
-        $req = $this->createRequest('GET', $this->url .'token/validate_with_login', $this->params, $this->headers);
+        $req = $this->createRequest('GET', $this->url . 'token/validate_with_login', $this->params, $this->headers);
         $response = $this->client->send($req);
+
         return $response->json();
     }
 
@@ -66,11 +68,12 @@ class Authentication extends TmdbModel
      */
     public function generateSession($requestToken)
     {
-        $data = [ 'request_token' => $requestToken ];
+        $data = ['request_token' => $requestToken];
 
         $this->setQueryParams($data);
-        $req = $this->createRequest('GET', $this->url .'session/new', $this->params, $this->headers);
+        $req = $this->createRequest('GET', $this->url . 'session/new', $this->params, $this->headers);
         $response = $this->client->send($req);
+
         return $response->json();
     }
 
@@ -103,9 +106,11 @@ class Authentication extends TmdbModel
 
                 return ['message' => 'Login successful', 'session_id' => $session['session_id'], 'status' => 200];
             }
+
             return ['message' => 'There was an error. Please try again.', 'status' => 500];
         } catch (RequestException $e) {
             $res = $e->getResponse();
+
             return ['message' => $res->getReasonPhrase(), 'status' => $res->getStatusCode()];
         }
     }

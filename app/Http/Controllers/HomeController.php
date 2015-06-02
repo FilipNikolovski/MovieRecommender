@@ -39,23 +39,23 @@ class HomeController extends Controller
             $page = $request->get('page');
             $page = (isset($page)) ? $page : 1;
             $nowPlaying = $this->movie->nowPlaying($page);
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             abort(404);
         }
         $movies = new LengthAwarePaginator($nowPlaying['results'], $nowPlaying['total_results'], 20);
         $movies->setPath(url('/'));
+
         return view('home')->with('movies', $movies);
     }
 
     public function getTopRated(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             try {
                 $topRated = $this->movie->topRated();
+
                 return response()->json($topRated['results'], 200);
-            }
-            catch(Exception $e) {
+            } catch (Exception $e) {
                 abort(500);
             }
         }
@@ -64,12 +64,12 @@ class HomeController extends Controller
 
     public function getPopular(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             try {
                 $popular = $this->movie->popular();
+
                 return response()->json($popular['results'], 200);
-            }
-            catch(Exception $e) {
+            } catch (Exception $e) {
                 abort(500);
             }
         }

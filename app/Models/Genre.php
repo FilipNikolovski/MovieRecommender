@@ -32,6 +32,7 @@ class Genre extends TmdbModel
     {
         $req = $this->createRequest('GET', $this->url . 'movie/list', $this->params, $this->headers);
         $response = $this->client->send($req);
+
         return $response->json();
     }
 
@@ -44,6 +45,7 @@ class Genre extends TmdbModel
     {
         $req = $this->createRequest('GET', $this->url . 'tv/list', $this->params, $this->headers);
         $response = $this->client->send($req);
+
         return $response->json();
     }
 
@@ -57,8 +59,9 @@ class Genre extends TmdbModel
     public function findMoviesByGenre($id, $page = 1)
     {
         $this->setQueryParams(['page' => $page]);
-        $req = $this->createRequest('GET', $this->url .$id. '/movies', $this->params, $this->headers);
+        $req = $this->createRequest('GET', $this->url . $id . '/movies', $this->params, $this->headers);
         $response = $this->client->send($req);
+
         return $response->json();
     }
 }

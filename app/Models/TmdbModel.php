@@ -55,7 +55,7 @@ abstract class TmdbModel
 
         $this->API_KEY = env('API_KEY');
 
-        $this->params = [ 'api_key' => $this->API_KEY ];
+        $this->params = ['api_key' => $this->API_KEY];
 
         $this->headers = ['Content-Type' => 'application/json'];
     }
@@ -65,6 +65,7 @@ abstract class TmdbModel
         $request = $this->client->createRequest($method, $url);
         $request->setHeaders($headers);
         $request->setQuery($params);
+
         return $request;
     }
 
@@ -83,6 +84,6 @@ abstract class TmdbModel
      */
     protected function resetParams()
     {
-        $this->params = [ 'api_key' => $this->API_KEY ];
+        $this->params = ['api_key' => $this->API_KEY];
     }
 }

@@ -32,6 +32,7 @@ class Movie extends TmdbModel
     {
         $req = $this->createRequest('GET', $this->url . $id, $this->params, $this->headers);
         $response = $this->client->send($req);
+
         return $response->json();
     }
 
@@ -44,8 +45,9 @@ class Movie extends TmdbModel
     public function upcoming($page = 1)
     {
         $this->setQueryParams(['page' => $page]);
-        $req = $this->createRequest('GET', $this->url .'upcoming', $this->params, $this->headers);
+        $req = $this->createRequest('GET', $this->url . 'upcoming', $this->params, $this->headers);
         $response = $this->client->send($req);
+
         return $response->json();
     }
 
@@ -58,8 +60,9 @@ class Movie extends TmdbModel
     public function topRated($page = 1)
     {
         $this->setQueryParams(['page' => $page]);
-        $req = $this->createRequest('GET', $this->url .'top_rated', $this->params, $this->headers);
+        $req = $this->createRequest('GET', $this->url . 'top_rated', $this->params, $this->headers);
         $response = $this->client->send($req);
+
         return $response->json();
     }
 
@@ -72,8 +75,9 @@ class Movie extends TmdbModel
     public function nowPlaying($page = 1)
     {
         $this->setQueryParams(['page' => $page]);
-        $req = $this->createRequest('GET', $this->url .'now_playing', $this->params, $this->headers);
+        $req = $this->createRequest('GET', $this->url . 'now_playing', $this->params, $this->headers);
         $response = $this->client->send($req);
+
         return $response->json();
     }
 
@@ -86,8 +90,9 @@ class Movie extends TmdbModel
     public function popular($page = 1)
     {
         $this->setQueryParams(['page' => $page]);
-        $req = $this->createRequest('GET', $this->url .'popular', $this->params, $this->headers);
+        $req = $this->createRequest('GET', $this->url . 'popular', $this->params, $this->headers);
         $response = $this->client->send($req);
+
         return $response->json();
     }
 
@@ -101,8 +106,9 @@ class Movie extends TmdbModel
     public function similar($id, $page = 1)
     {
         $this->setQueryParams(['page' => $page]);
-        $req = $this->createRequest('GET', $this->url .$id. '/similar', $this->params, $this->headers);
+        $req = $this->createRequest('GET', $this->url . $id . '/similar', $this->params, $this->headers);
         $response = $this->client->send($req);
+
         return $response->json();
     }
 
@@ -116,9 +122,23 @@ class Movie extends TmdbModel
     public function reviews($id, $page = 1)
     {
         $this->setQueryParams(['page' => $page]);
-        $req = $this->createRequest('GET', $this->url .$id. '/reviews', $this->params, $this->headers);
+        $req = $this->createRequest('GET', $this->url . $id . '/reviews', $this->params, $this->headers);
         $response = $this->client->send($req);
+
         return $response->json();
     }
 
+    /**
+     * Returns the movie videos
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function videos($id)
+    {
+        $req = $this->createRequest('GET', $this->url . $id . '/videos', $this->params, $this->headers);
+        $response = $this->client->send($req);
+
+        return $response->json();
+    }
 }

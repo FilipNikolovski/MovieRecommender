@@ -1,6 +1,30 @@
 /**
  * Created by filip on 20.5.15.
  */
+var populateSlick = function(slick, items, slideIndex) {
+    var i = slideIndex;
+    items.map(function (item) {
+        if(i !== 0) {
+            slick.slick('slickRemove', i - 1);
+            i--;
+            slideIndex--;
+        }
+
+        var imgSrc = (item.backdrop_path != null) ? 'http://image.tmdb.org/t/p/w500' + item.backdrop_path : '';
+        var html = '<div class="list-item animated bounceIn">' +
+            '<a href="' + url_base + '/movies/' + item.id + '">' +
+            '<figure>' +
+            '<img class="img-responsive" src="' + imgSrc + '" alt="' + item.title + '">' +
+            '<figcaption><p>'+item.title+'</p></figcaption>' +
+            '</figure>' +
+            '</a>' +
+            '</div>';
+
+        slick.slick('slickAdd', html);
+        slideIndex++;
+    });
+};
+
 (function ($) {
     var topRatedIndex = 5
         , topRatedLoaded = false
@@ -10,6 +34,9 @@
         , popular = $('#popular');
 
     $(document).ready(function () {
+
+        //disable dragging images
+        window.ondragstart = function() { return false; };
 
         topRated.slick({
             dots: true,
@@ -77,27 +104,30 @@
             ]
         });
 
-        var topRatedWayp = new Waypoint({
-            element: document.getElementById('top-rated'),
-            handler: function (direction) {
-                if (direction === 'down' && !topRatedLoaded) {
-                    $.ajax({
-                        type: 'GET',
-                        url: url_base + '/top-rated',
-                        dataType: 'json'
-                    })
-                        .done(function (response) {
-                            populateSlick(topRated, response, topRatedIndex);
-                            topRatedLoaded = true;
+        if($('#top-rated').length > 0) {
+            var topRatedWayp = new Waypoint({
+                element: document.getElementById('top-rated'),
+                handler: function (direction) {
+                    if (direction === 'down' && !topRatedLoaded) {
+                        $.ajax({
+                            type: 'GET',
+                            url: url_base + '/top-rated',
+                            dataType: 'json'
                         })
-                        .fail(function (xhr) {
-                            //
-                        });
-                }
-            },
-            offset: '180%'
-        })
-            , popularWayp = new Waypoint({
+                            .done(function (response) {
+                                populateSlick(topRated, response, topRatedIndex);
+                                topRatedLoaded = true;
+                            })
+                            .fail(function (xhr) {
+                                //
+                            });
+                    }
+                },
+                offset: '180%'
+            });
+        }
+        if($('#popular').length > 0) {
+            var popularWayp = new Waypoint({
                 element: document.getElementById('popular'),
                 handler: function (direction) {
                     if (direction === 'down' && !popularLoaded) {
@@ -117,6 +147,7 @@
                 },
                 offset: '180%'
             });
+        }
 
         $("#loginForm").on('submit', function (e) {
             e.preventDefault();
@@ -156,24 +187,5 @@
 
         });
     });
-
-    var populateSlick = function(slick, items, slideIndex) {
-        var i = slideIndex;
-        items.map(function (item) {
-            if(i !== 0) {
-                slick.slick('slickRemove', i - 1);
-                i--;
-                slideIndex--;
-            }
-
-            var imgSrc = (item.backdrop_path !== undefined) ? 'http://image.tmdb.org/t/p/w500' + item.backdrop_path : '';
-            var html = '<div class="list-item animated bounceIn">' +
-                '<img class="img-responsive" src="' + imgSrc + '" alt="' + item.title + '">' +
-                '</div>';
-
-            slick.slick('slickAdd', html);
-            slideIndex++;
-        });
-    };
 
 })(window.jQuery);

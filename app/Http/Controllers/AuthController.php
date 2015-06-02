@@ -11,7 +11,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Models\Authentication;
-use GuzzleHttp\Exception\RequestException;
 
 class AuthController extends Controller
 {
@@ -33,6 +32,7 @@ class AuthController extends Controller
     public function postLogin(LoginRequest $request)
     {
         $res = $this->auth->login($request->get('username'), $request->get('password'));
+
         return response()->json($res, $res['status']);
     }
 }

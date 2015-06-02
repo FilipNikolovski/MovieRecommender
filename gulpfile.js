@@ -34,19 +34,24 @@ var inProduction = ('production' in gulputil.env),
             bowerPath + 'bootstrap/dist/js/bootstrap.js',
             bowerPath + 'waypoints/lib/noframework.waypoints.js',
             bowerPath + 'slick.js/slick/slick.js',
+            bowerPath + 'raty/lib/jquery.raty.js',
             'resources/assets/js/**/*.js'
         ],
         styles: [
             bowerPath + 'slick.js/slick/slick.css',
             bowerPath + 'slick.js/slick/slick-theme.css',
             bowerPath + 'animate.css/animate.css',
+            bowerPath + 'raty/lib/jquery.raty.css',
             'resources/assets/less/*.less'
         ],
         fonts: [
             bowerPath + 'bootstrap/fonts/**',
+            bowerPath + 'raty/lib/fonts/*.*',
             'resources/assets/fonts/*.*'
         ],
         images: [
+            bowerPath + 'slick.js/slick/ajax-loader.gif',
+            bowerPath + 'raty/lib/images/*.*',
             'resources/assets/images/**/*.*'
         ]
     };

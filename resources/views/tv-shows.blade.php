@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header" style="padding-top:30px;">
-                Top Playing Movies
+                Top rated TV Shows
             </h1>
         </div>
     </div>
@@ -15,8 +15,8 @@
         @if(!empty($movies))
             @foreach($movies as $movie)
                 <div class="col-md-6 portfolio-item">
-                    <a href="{{url('/movies/' . $movie['id'])}}">
-                        <?php $posterPath = (isset($movie['backdrop_path'])) ? 'http://image.tmdb.org/t/p/w500'.$movie['backdrop_path'] : asset('images/no_image.jpg'); ?>
+                    <a href="{{url('/movie/' . $movie['id'])}}">
+                        <?php $posterPath = (isset($movie['backdrop_path'])) ? 'http://image.tmdb.org/t/p/w500'.$movie['backdrop_path'] : ''; ?>
                         <img class="img-responsive" src="{{$posterPath}}" alt="{{$movie['original_title']}}">
                     </a>
 
@@ -41,11 +41,11 @@
     <!-- /.row -->
     <hr>
 
-    <!-- Top Rated -->
+    <!-- Latest TV Shows-->
     <div class="row">
         <div class="col-lg-12">
             <h2 class="page-header">
-                Top Rated
+                Latest TV Shows
             </h2>
         </div>
     </div>
@@ -64,11 +64,11 @@
     <!-- /.row -->
     <hr>
 
-    <!-- Popular -->
+    <!-- Popular TV Shows -->
     <div class="row">
         <div class="col-lg-12">
             <h2 class="page-header">
-                Popular
+                Popular TV Shows
             </h2>
         </div>
     </div>
