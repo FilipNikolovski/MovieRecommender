@@ -23,7 +23,7 @@
                 <li>
                     <a href="{{url('/search')}}">Search</a>
                 </li>
-                @if(empty($username))
+                @if(empty($sessionId))
                     <li>
                         <a href="#" data-target="#loginModal" data-toggle="modal" >Login</a>
                     </li>

@@ -9,8 +9,7 @@ var populateSlick = function(slick, items, slideIndex) {
             i--;
             slideIndex--;
         }
-
-        var imgSrc = (item.backdrop_path != null) ? 'http://image.tmdb.org/t/p/w500' + item.backdrop_path : '';
+        var imgSrc = (item.backdrop_path != null || item.backdrop_path != undefined) ? 'http://image.tmdb.org/t/p/w500' + item.backdrop_path : url_base + '/images/no_image.jpg';
         var html = '<div class="list-item animated bounceIn">' +
             '<a href="' + url_base + '/movies/' + item.id + '">' +
             '<figure>' +

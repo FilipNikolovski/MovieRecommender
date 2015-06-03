@@ -13,6 +13,7 @@ use App\Models\Movie;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 
 class MoviesController extends Controller
 {
@@ -29,16 +30,40 @@ class MoviesController extends Controller
         $this->movie = $movie;
     }
 
-    public function getIndex($id, Request $request)
+    public function index(Request $request)
+    {
+        $movies = [];
+        try {
+            $page = $request->get('page');
+            $page = (isset($page)) ? $page : 1;
+            $key = (isset($page)) ? 'now-playing-' . $page : 'now-playing';
+
+            $nowPlaying = Cache::section('now-playing')->remember($key, 10, function () use ($page) {
+                return $this->movie->nowPlaying($page);
+            });
+
+            $movies = new LengthAwarePaginator($nowPlaying['results'], $nowPlaying['total_results'], 20);
+            $movies->setPath(url('/movies'));
+        } catch (Exception $e) {
+            abort(404);
+        }
+
+        return view('movies')->with('movies', $movies);
+    }
+
+    public function getMovie($id, Request $request)
     {
         $reviews = [];
         $movie = [];
         $videos = [];
 
         try {
+            $movie = Cache::section('movie-' . $id)->remember('movie-' . $id, 10, function () use ($id) {
+                return $this->movie->find($id);
+            });
+
             $page = $request->get('page');
             $page = (isset($page)) ? $page : 1;
-            $movie = $this->movie->find($id);
             $reviews = $this->movie->reviews($id, $page);
             $videos = $this->movie->videos($id);
         } catch (Exception $e) {
@@ -57,16 +82,23 @@ class MoviesController extends Controller
     public function getSimilarMovies($id)
     {
         try {
-            $similar = $this->movie->similar($id);
+            $similar = Cache::section('similar-to-' . $id)->remember('similar-to-' . $id, 10, function () use ($id) {
+                return $this->movie->similar($id);
+            });
 
             return response()->json($similar['results'], 200);
         } catch (Exception $e) {
-            abort(500);
+            return response()->json(['message' => 'There was an error'], 500);
         }
     }
 
-    public function postAddToFavorites(Request $request)
+    public function favorites(Request $request)
     {
+        $this->middleware('auth');
+    }
 
+    public function watchlist(Request $request)
+    {
+        $this->middleware('auth');
     }
 }

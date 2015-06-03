@@ -102,7 +102,7 @@ class Authentication extends TmdbModel
                 $this->validateToken($requestToken['request_token'], $username, $password);
 
                 $session = $this->generateSession($requestToken['request_token']);
-                session(['session_id' => $session['session_id'], 'username' => $username]);
+                session(['session_id' => $session['session_id']]);
 
                 return ['message' => 'Login successful', 'session_id' => $session['session_id'], 'status' => 200];
             }
@@ -113,6 +113,12 @@ class Authentication extends TmdbModel
 
             return ['message' => $res->getReasonPhrase(), 'status' => $res->getStatusCode()];
         }
+    }
+
+    public function logout()
+    {
+        session()->flush();
+        return true;
     }
 
 }

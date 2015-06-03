@@ -12,7 +12,7 @@ abstract class Controller extends BaseController
     public function __construct()
     {
         if (session()->has('session_id')) {
-            view()->share('username', session('username'));
+            view()->share('sessionId', session('session_id'));
         }
     }
 

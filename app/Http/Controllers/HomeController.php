@@ -11,7 +11,7 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -28,31 +28,19 @@ class HomeController extends Controller
         $this->movie = $movie;
     }
 
-    /**
-     * @param Request $request
-     * @return $this
-     */
     public function getIndex(Request $request)
     {
-        $nowPlaying = [];
-        try {
-            $page = $request->get('page');
-            $page = (isset($page)) ? $page : 1;
-            $nowPlaying = $this->movie->nowPlaying($page);
-        } catch (Exception $e) {
-            abort(404);
-        }
-        $movies = new LengthAwarePaginator($nowPlaying['results'], $nowPlaying['total_results'], 20);
-        $movies->setPath(url('/'));
-
-        return view('home')->with('movies', $movies);
+        //TODO Create home screen
     }
 
     public function getTopRated(Request $request)
     {
         if ($request->ajax()) {
             try {
-                $topRated = $this->movie->topRated();
+
+                $topRated = Cache::section('top-rated')->remember('top-rated', 10, function () {
+                    return $this->movie->topRated();
+                });
 
                 return response()->json($topRated['results'], 200);
             } catch (Exception $e) {
@@ -66,7 +54,9 @@ class HomeController extends Controller
     {
         if ($request->ajax()) {
             try {
-                $popular = $this->movie->popular();
+                $popular = Cache::section('popular')->remember('popular', 10, function () {
+                    return $this->movie->popular();
+                });
 
                 return response()->json($popular['results'], 200);
             } catch (Exception $e) {
