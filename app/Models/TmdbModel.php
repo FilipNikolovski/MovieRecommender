@@ -57,10 +57,10 @@ abstract class TmdbModel
 
         $this->params = ['api_key' => $this->API_KEY];
 
-        $this->headers = ['Content-Type' => 'application/json'];
+        $this->headers = ['Content-Type' => 'application/json', 'Accept' => 'application/json'];
     }
 
-    public function createRequest($method = 'GET', $url, array $params, array $headers)
+    public function createRequest($method = 'GET', $url, $params, array $headers)
     {
         $request = $this->client->createRequest($method, $url);
         $request->setHeaders($headers);

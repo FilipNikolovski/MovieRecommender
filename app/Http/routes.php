@@ -18,9 +18,11 @@ Route::group(['prefix' => 'movies'], function() {
 
     Route::get('/{id}/similar-movies', ['uses' => 'MoviesController@getSimilarMovies']);
 
-    Route::post('/favorites', ['uses' => 'MoviesController@favorites']);
+    Route::post('/rating', ['uses' => 'MoviesController@postRating']);
 
-    Route::post('/watchlist', ['uses' => 'MoviesController@watchlist']);
+    Route::post('/favorites', ['uses' => 'MoviesController@postFavorites']);
+
+    Route::post('/watchlist', ['uses' => 'MoviesController@postWatchlist']);
 });
 
 Route::controller('/auth', 'AuthController');

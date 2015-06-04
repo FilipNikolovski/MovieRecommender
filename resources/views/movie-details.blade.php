@@ -7,13 +7,46 @@
     </div>
     <div class="row">
         <input type="hidden" id="movieId" value="{{$movie['id']}}">
+
         <div class="col-lg-4 col-md-5 col-xs-10 col-sm-8">
-            <div id="raty"></div>
+            @if(!empty($sessionId))
+                <?php if(!empty($accountStates['rated'])) {
+                    $readonly = 'true';
+                    $score = $accountStates['rated']['value'];
+                } else {
+                    $readonly = 'false';
+                    $score = 0;
+                }?>
+                <div id="raty" data-readonly="{{$readonly}}" data-score="{{$score}}"></div>
+            @endif
             <?php $imgSrc = (isset($movie['poster_path'])) ? 'http://image.tmdb.org/t/p/w500' . $movie['poster_path'] : asset('images/no_image.jpg'); ?>
             <img class="img-responsive" src="{{$imgSrc}}" alt="{{$movie['original_title']}}"/>
-            @if(!empty($username))
-                <button type="button" id="add-to-favorite" class="btn btn-primary">Add to favorite</button>
-                <button type="button" id="add-to-watchlist" class="btn btn-warning" style="float:right">Add to watchlist</button>
+            @if(!empty($sessionId))
+                <div style="float:left">
+                    <?php $btnStyle = ($accountStates['favorite']) ? 'primary' : 'success'; ?>
+                    <?php $flag = ($accountStates['favorite']) ? 'false' : 'true'; ?>
+                    <form method="post" action="{{action('MoviesController@postFavorites')}}" id="favoritesForm">
+                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                        <input type="hidden" name="media_type" value="movie">
+                        <input type="hidden" name="media_id" value="{{$movie['id']}}">
+                        <input type="hidden" name="favorite" value="{{$flag}}">
+                        <button type="submit" id="add-to-favorite"
+                                class="btn btn-{{$btnStyle}}"><?php echo (!$accountStates['favorite']) ? 'Add to favorites' : 'Remove from favorites' ?></button>
+                    </form>
+                </div>
+                <div style="float:right;">
+                    <?php $btnStyle = ($accountStates['watchlist']) ? 'danger' : 'warning'; ?>
+                        <?php $flag = ($accountStates['watchlist']) ? 'false' : 'true'; ?>
+                    <form method="post" action="{{action('MoviesController@postWatchlist')}}" id="watchlistForm">
+                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                        <input type="hidden" name="media_type" value="movie">
+                        <input type="hidden" name="media_id" value="{{$movie['id']}}">
+                        <input type="hidden" name="watchlist" value="{{$flag}}">
+                        <button type="submit" id="add-to-watchlist"
+                                class="btn btn-{{$btnStyle}}"><?php echo (!$accountStates['watchlist']) ? 'Add to watchlist' : 'Remove from watchlist' ?>
+                        </button>
+                    </form>
+                </div>
             @endif
         </div>
         <div class="col-lg-8 col-md-7 col-xs-7">
@@ -69,23 +102,23 @@
             </div>
         </div>
 
-            <div class="row" style="margin-top:5px;margin-bottom:10px;padding-top:40px;">
-                <div class="col-lg-12">
-                    <h2 class="page-header">Similar movies:</h2>
+        <div class="row" style="margin-top:5px;margin-bottom:10px;padding-top:40px;">
+            <div class="col-lg-12">
+                <h2 class="page-header">Similar movies:</h2>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-lg-12" id="similar-movies">
+                <div class="list-item animated infinite pulse">
+                </div>
+                <div class="list-item animated infinite pulse">
+                </div>
+                <div class="list-item animated infinite pulse">
+                </div>
+                <div class="list-item animated infinite pulse">
                 </div>
             </div>
-            <div class="row text-center">
-                <div class="col-lg-12" id="similar-movies">
-                    <div class="list-item animated infinite pulse">
-                    </div>
-                    <div class="list-item animated infinite pulse">
-                    </div>
-                    <div class="list-item animated infinite pulse">
-                    </div>
-                    <div class="list-item animated infinite pulse">
-                    </div>
-                </div>
-            </div>
+        </div>
 
     </div>
     @if(!empty($videos['results'][0]))

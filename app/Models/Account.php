@@ -12,6 +12,7 @@ namespace App\Models;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class Account extends TmdbModel
 {
@@ -39,6 +40,7 @@ class Account extends TmdbModel
                 $this->params, $this->headers);
 
             $response = $this->client->send($req);
+
             return $response->json();
         } catch (RequestException $e) {
             session()->flush();
@@ -109,26 +111,40 @@ class Account extends TmdbModel
     {
         if ($this->auth->check()) {
             try {
-                $this->setQueryParams([
-                    'media_type' => $mediaType,
-                    'media_id' => $mediaId,
-                    'favorite' => $favorite
-                ]);
-                $req = $this->createRequest('POST', $this->url . '/' . session('session_id') . '/favorite',
-                    $this->params, $this->headers);
-                $response = $this->client->send($req);
+                //Guzzle has problems with sending json body so had to use curl instead
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_URL, $this->url . '/' . session('session_id') . '/favorite?api_key=' . $this->API_KEY . '&session_id=' . session('session_id'));
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_HEADER, false);
+
+                curl_setopt($ch, CURLOPT_POST, true);
+
+                curl_setopt($ch, CURLOPT_POSTFIELDS, "{
+                    \"media_type\": \"". $mediaType ."\",
+                    \"media_id\": ". $mediaId .",
+                    \"favorite\": ". $favorite ."
+                }");
+
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    "Accept: application/json",
+                    "Content-Type: application/json"
+                ));
+
+                $response = curl_exec($ch);
+                curl_close($ch);
 
                 Cache::section('favorites')->flush();
 
-                return $response->json();
+                return $response;
             } catch (RequestException $e) {
-                session()->flush();
+                Log::error($e->getMessage() . '\nLine:' . $e->getLine() . '\nStack Trace:' . $e->getTraceAsString() . '\nRequest:' . $e->getRequest());
 
-                return false;
+                return ['status' => 'error', 'message' => 'Something went wrong'];
             }
         }
 
-        return false;
+        return ['status' => 'error', 'message' => 'Something went wrong'];
     }
 
     /**
@@ -141,25 +157,39 @@ class Account extends TmdbModel
     {
         if ($this->auth->check()) {
             try {
-                $this->setQueryParams([
-                    'media_type' => $mediaType,
-                    'media_id' => $mediaId,
-                    'watchlist' => $watchlist
-                ]);
-                $req = $this->createRequest('POST', $this->url . '/' . session('session_id') . '/watchlist',
-                    $this->params, $this->headers);
-                $response = $this->client->send($req);
+                //Guzzle has problems with sending json body so had to use curl instead
+                $ch = curl_init();
 
-                Cache::section('watchlist')->flush();
+                curl_setopt($ch, CURLOPT_URL, $this->url . '/' . session('session_id') . '/watchlist?api_key=' . $this->API_KEY . '&session_id=' . session('session_id'));
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_HEADER, false);
 
-                return $response->json();
+                curl_setopt($ch, CURLOPT_POST, true);
+
+                curl_setopt($ch, CURLOPT_POSTFIELDS, "{
+                    \"media_type\": \"". $mediaType ."\",
+                    \"media_id\": ". $mediaId .",
+                    \"watchlist\": ". $watchlist ."
+                }");
+
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    "Accept: application/json",
+                    "Content-Type: application/json"
+                ));
+
+                $response = curl_exec($ch);
+                curl_close($ch);
+
+                Cache::section('favorites')->flush();
+
+                return json_decode($response);
             } catch (RequestException $e) {
-                session()->flush();
+                Log::error($e->getMessage() . '\nLine:' . $e->getLine() . '\nStack Trace:' . $e->getTraceAsString());
 
-                return false;
+                return ['status' => 'error', 'message' => 'Something went wrong'];
             }
         }
 
-        return false;
+        return ['status' => 'error', 'message' => 'Something went wrong'];
     }
 }

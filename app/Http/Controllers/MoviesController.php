@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Account;
 use App\Models\Movie;
 use Exception;
 use Illuminate\Http\Request;
@@ -56,7 +57,7 @@ class MoviesController extends Controller
         $reviews = [];
         $movie = [];
         $videos = [];
-
+        $accountStates = [];
         try {
             $movie = Cache::section('movie-' . $id)->remember('movie-' . $id, 10, function () use ($id) {
                 return $this->movie->find($id);
@@ -66,6 +67,11 @@ class MoviesController extends Controller
             $page = (isset($page)) ? $page : 1;
             $reviews = $this->movie->reviews($id, $page);
             $videos = $this->movie->videos($id);
+            $sessionId = (session()->has('session_id')) ? session('session_id') : false;
+            if ($sessionId) {
+                $accountStates = $this->movie->accountStates($id, $sessionId);
+            }
+
         } catch (Exception $e) {
             abort(404);
         }
@@ -76,7 +82,8 @@ class MoviesController extends Controller
         return view('movie-details')
             ->with('movie', $movie)
             ->with('videos', $videos)
-            ->with('reviews', $reviews);
+            ->with('reviews', $reviews)
+            ->with('accountStates', $accountStates);
     }
 
     public function getSimilarMovies($id)
@@ -92,13 +99,38 @@ class MoviesController extends Controller
         }
     }
 
-    public function favorites(Request $request)
+    public function postRating(Request $request)
     {
         $this->middleware('auth');
+        $result = $this->movie->rateMovie($request->get('score'), $request->get('movie_id'));
+        if ($request->ajax()) {
+            return response($result, 200);
+        }
+
+        return redirect()->back();
     }
 
-    public function watchlist(Request $request)
+    public function postFavorites(Request $request, Account $account)
     {
         $this->middleware('auth');
+        $result = $account->addOrRemoveFromFavorites($request->get('media_type'), $request->get('media_id'),
+            $request->get('favorite'));
+        if ($request->ajax()) {
+            return response($result, 200);
+        }
+
+        return redirect()->back();
+    }
+
+    public function postWatchlist(Request $request, Account $account)
+    {
+        $this->middleware('auth');
+        $result = $account->addOrRemoveFromWatchlist($request->get('media_type'), $request->get('media_id'),
+            $request->get('watchlist'));
+        if ($request->ajax()) {
+            return response($result, 200);
+        }
+
+        return redirect()->back();
     }
 }
