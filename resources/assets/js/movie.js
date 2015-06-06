@@ -16,6 +16,7 @@
         });
 
     var rateMovie = function (raty, score, movieId) {
+        nanobar.go(50);
         $.ajax({
             type: 'POST',
             url: url_base + '/movies/rating',
@@ -27,7 +28,11 @@
             dataType: 'json'
         })
             .done(function (response) {
+                nanobar.go(100);
                 raty.raty('readOnly', true);
+            })
+            .fail(function(response) {
+                nanobar.go(100);
             });
     };
 
@@ -73,7 +78,7 @@
 
             })
             .fail(function (response) {
-                //
+                nanobar.go(100);
             });
     };
 
@@ -145,6 +150,7 @@
 
         $('#favoritesForm').on('submit', function (e) {
             e.preventDefault();
+            nanobar.go(50);
             var favoriteBtn = $('#add-to-favorite');
             favoriteBtn.prop('disabled', true);
 
@@ -163,6 +169,7 @@
                 dataType: 'json'
             })
                 .done(function (response) {
+                    nanobar.go(100);
                     favoriteBtn.prop('disabled', false);
                     if (response.status_code == 1) {
                         $('input[name="favorite"]').val('false');
@@ -175,12 +182,14 @@
                     }
                 })
                 .fail(function (response) {
+                    nanobar.go(100);
                     favoriteBtn.prop('disabled', false);
                 });
         });
 
         $('#watchlistForm').on('submit', function (e) {
             e.preventDefault();
+            nanobar.go(50);
             var watchlistBtn = $('#add-to-watchlist');
             watchlistBtn.prop('disabled', true);
 
@@ -199,6 +208,7 @@
                 dataType: 'json'
             })
                 .done(function (response) {
+                    nanobar.go(100);
                     watchlistBtn.prop('disabled', false);
                     if (response.status_code == 1) {
                         $('input[name="watchlist"]').val('false');
@@ -211,6 +221,7 @@
                     }
                 })
                 .fail(function (response) {
+                    nanobar.go(100);
                     watchlistBtn.prop('disabled', false);
                 });
         });

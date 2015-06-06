@@ -182,7 +182,7 @@ class Account extends TmdbModel
 
                 Cache::section('favorites')->flush();
 
-                return json_decode($response);
+                return $response;
             } catch (RequestException $e) {
                 Log::error($e->getMessage() . '\nLine:' . $e->getLine() . '\nStack Trace:' . $e->getTraceAsString());
 
