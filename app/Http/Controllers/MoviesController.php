@@ -133,4 +133,18 @@ class MoviesController extends Controller
 
         return redirect()->back();
     }
+
+    public function getSearch(Request $request)
+    {
+        if ($request->ajax()) {
+            $page = $request->get('page');
+            $page = (isset($page)) ? $page : 1;
+            $movies = $this->movie->search($request->get('search'), $page);
+
+            return view('partials.search-items')->with('movies', $movies);
+        }
+
+        return view('search');
+    }
+
 }

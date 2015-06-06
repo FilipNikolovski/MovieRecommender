@@ -35,6 +35,8 @@ var inProduction = ('production' in gulputil.env),
             bowerPath + 'waypoints/lib/noframework.waypoints.js',
             bowerPath + 'slick.js/slick/slick.js',
             bowerPath + 'raty/lib/jquery.raty.js',
+            bowerPath + 'imagesloaded/imagesloaded.pkgd.min.js',
+            bowerPath + 'nanobar/nanobar.js',
             'resources/assets/js/**/*.js'
         ],
         styles: [

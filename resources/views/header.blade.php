@@ -21,7 +21,7 @@
                     <a href="{{url('/tv-shows')}}">TV Shows</a>
                 </li>
                 <li>
-                    <a href="{{url('/search')}}">Search</a>
+                    <a href="{{url('/movies/search')}}">Search</a>
                 </li>
                 @if(empty($sessionId))
                     <li>

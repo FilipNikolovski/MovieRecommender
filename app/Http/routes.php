@@ -12,6 +12,8 @@
 */
 Route::group(['prefix' => 'movies'], function() {
 
+    Route::get('/search', ['uses' => 'MoviesController@getSearch']);
+
     Route::get('/', ['uses' => 'MoviesController@index']);
 
     Route::get('/{id}', ['uses' => 'MoviesController@getMovie']);
@@ -23,6 +25,9 @@ Route::group(['prefix' => 'movies'], function() {
     Route::post('/favorites', ['uses' => 'MoviesController@postFavorites']);
 
     Route::post('/watchlist', ['uses' => 'MoviesController@postWatchlist']);
+
+    Route::get('/search', ['uses' => 'MoviesController@getSearch']);
+
 });
 
 Route::controller('/auth', 'AuthController');

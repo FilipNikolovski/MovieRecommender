@@ -191,4 +191,18 @@ class Movie extends TmdbModel
             return false;
         }
     }
+
+    public function search($query, $page = 1)
+    {
+        try {
+            $this->setQueryParams(['page' => $page, 'query' => $query]);
+            $req = $this->createRequest('GET', $this->API_URL . 'search/movie', $this->params, $this->headers);
+            $response = $this->client->send($req);
+
+            return $response->json();
+        } catch(RequestException $e) {
+            Log::error($e->getMessage() . '\nLine:' . $e->getLine() . '\nStack Trace:' . $e->getTraceAsString());
+            return [];
+        }
+    }
 }
