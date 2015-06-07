@@ -36,7 +36,7 @@
                     </form>
                 </div>
                 <div style="float:right;">
-                    <?php $btnStyle = ($accountStates['watchlist']) ? 'danger' : 'warning'; ?>
+                    <?php $btnStyle = ($accountStates['watchlist']) ? 'primary' : 'success'; ?>
                         <?php $flag = ($accountStates['watchlist']) ? 'false' : 'true'; ?>
                     <form method="post" action="{{action('MoviesController@postWatchlist')}}" id="watchlistForm">
                         <input type="hidden" name="_token" value="{{csrf_token()}}">

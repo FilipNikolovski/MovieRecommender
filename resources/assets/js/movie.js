@@ -8,6 +8,7 @@
         , similarLoaded = false
         , searchList = $('#search-list')
         , searchPage = 2
+        , isLoading = false
         , raty = $('#raty')
         , _token = $('input[name="_token"]').val()
         , nanobar = new Nanobar({
@@ -31,13 +32,14 @@
                 nanobar.go(100);
                 raty.raty('readOnly', true);
             })
-            .fail(function(response) {
+            .fail(function (response) {
                 nanobar.go(100);
             });
     };
 
     var search = function (query, page, list) {
         nanobar.go(30);
+        isLoading = true;
         $.ajax({
             type: 'GET',
             url: url_base + '/movies/search',
@@ -49,16 +51,17 @@
             dataType: 'html'
         })
             .done(function (response) {
+                isLoading = false;
                 var progress = 50;
                 if (page > 1) {
                     var loadImages = $('#loadImages');
                     loadImages.html(response);
                     loadImages.imagesLoaded()
                         .always(function () {
-                        nanobar.go(100);
-                        list.append(response);
-                    })
-                        .progress(function(instance, image) {
+                            nanobar.go(100);
+                            list.append(response);
+                        })
+                        .progress(function (instance, image) {
                             nanobar.go(progress);
                             progress += 2;
                         });
@@ -69,7 +72,7 @@
                             nanobar.go(100);
                             list.removeClass('hide');
                         })
-                        .progress(function(instance, image) {
+                        .progress(function (instance, image) {
                             nanobar.go(progress);
                             progress += 2;
                         });
@@ -78,6 +81,7 @@
 
             })
             .fail(function (response) {
+                isLoading = false;
                 nanobar.go(100);
             });
     };
@@ -131,22 +135,20 @@
             });
         }
 
-        if (raty.length > 0) {
-            raty.raty({
-                half: true,
-                number: 10,
-                path: '../images',
-                score: function () {
-                    return $(this).data('score');
-                },
-                click: function (score, evt) {
-                    rateMovie(raty, score, $('#movieId').val());
-                },
-                readOnly: function () {
-                    return $(this).data('readonly');
-                }
-            })
-        }
+        raty.raty({
+            half: true,
+            number: 10,
+            path: '../images',
+            score: function () {
+                return $(this).data('score');
+            },
+            click: function (score, evt) {
+                rateMovie(raty, score, $('#movieId').val());
+            },
+            readOnly: function () {
+                return $(this).data('readonly');
+            }
+        });
 
         $('#favoritesForm').on('submit', function (e) {
             e.preventDefault();
@@ -213,11 +215,11 @@
                     if (response.status_code == 1) {
                         $('input[name="watchlist"]').val('false');
                         watchlistBtn.html('Remove from watchlist');
-                        watchlistBtn.removeClass('btn-warning').addClass('btn-danger');
+                        watchlistBtn.removeClass('btn-success').addClass('btn-primary');
                     } else {
                         $('input[name="watchlist"]').val('true');
                         watchlistBtn.html('Add to watchlist');
-                        watchlistBtn.removeClass('btn-danger').addClass('btn-warning');
+                        watchlistBtn.removeClass('btn-primary').addClass('btn-success');
                     }
                 })
                 .fail(function (response) {
@@ -239,8 +241,8 @@
         });
 
         $(window).scroll(function () {
-            if (searchList.html() != '') {
-                if ($(window).height() + $(window).scrollTop() == $(document).height()) {
+            if (searchList.length > 0 && searchList.html() != '') {
+                if ($(window).height() + $(window).scrollTop() == $(document).height() && !isLoading) {
                     var query = $('input[name="search"]').val();
                     search(query, searchPage++, searchList);
                 }

@@ -51,24 +51,25 @@ class MoviesController extends Controller
             abort(404);
         }
 
-        return view('movies')->with('movies', $movies);
+        return view('movie.movies')->with('movies', $movies);
     }
 
     public function getMovie($id, Request $request)
     {
-        $reviews = [];
-        $movie = [];
-        $videos = [];
+        $data = [];
         $accountStates = [];
         try {
-            $movie = Cache::section('movie-' . $id)->remember('movie-' . $id, 10, function () use ($id) {
-                return $this->movie->find($id);
-            });
-
             $page = $request->get('page');
             $page = (isset($page)) ? $page : 1;
-            $reviews = $this->movie->reviews($id, $page);
-            $videos = $this->movie->videos($id);
+            $data = Cache::section('movie-' . $id)->remember('movie-' . $id, 10, function () use ($id, $page) {
+                $data['movie'] = $this->movie->find($id);
+                $data['reviews'] = $this->movie->reviews($id, $page);
+                $data['videos'] = $this->movie->videos($id);
+
+                return $data;
+            });
+
+
             $sessionId = (session()->has('session_id')) ? session('session_id') : false;
             if ($sessionId) {
                 $accountStates = $this->movie->accountStates($id, $sessionId);
@@ -78,12 +79,12 @@ class MoviesController extends Controller
             abort(404);
         }
 
-        $reviews = new LengthAwarePaginator($reviews['results'], $reviews['total_results'], 20);
+        $reviews = new LengthAwarePaginator($data['reviews']['results'], $data['reviews']['total_results'], 20);
         $reviews->setPath(url('/movie/' . $id));
 
-        return view('movie-details')
-            ->with('movie', $movie)
-            ->with('videos', $videos)
+        return view('movie.movie-details')
+            ->with('movie', $data['movie'])
+            ->with('videos', $data['videos'])
             ->with('reviews', $reviews)
             ->with('accountStates', $accountStates);
     }
@@ -146,7 +147,16 @@ class MoviesController extends Controller
             return view('partials.search-items')->with('movies', $movies);
         }
 
-        return view('search');
+        $query = $request->get('search');
+        $movies = [];
+
+        if (isset($query)) {
+            $movies = $this->movie->search($query);
+        }
+
+        return view('search')
+            ->with('movies', $movies)
+            ->with('query', $query);
     }
 
 }

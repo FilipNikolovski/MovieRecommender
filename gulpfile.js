@@ -37,6 +37,7 @@ var inProduction = ('production' in gulputil.env),
             bowerPath + 'raty/lib/jquery.raty.js',
             bowerPath + 'imagesloaded/imagesloaded.pkgd.min.js',
             bowerPath + 'nanobar/nanobar.js',
+            bowerPath + 'masonry/dist/masonry.pkgd.js',
             'resources/assets/js/**/*.js'
         ],
         styles: [
@@ -49,6 +50,7 @@ var inProduction = ('production' in gulputil.env),
         fonts: [
             bowerPath + 'bootstrap/fonts/**',
             bowerPath + 'raty/lib/fonts/*.*',
+            bowerPath + 'slick.js/slick/fonts/*.*',
             'resources/assets/fonts/*.*'
         ],
         images: [
