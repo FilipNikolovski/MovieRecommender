@@ -31,6 +31,12 @@ class TvShow extends TmdbModel
         return $response->json();
     }
 
+    public function videos($id) {
+        $req = $this->createRequest('GET', $this->url . $id . '/videos', $this->params, $this->headers);
+        $response = $this->client->send($req);
+
+        return $response->json();
+    }
     /**
      * Returns upcoming movies with paginated results
      * @return mixed
@@ -53,6 +59,14 @@ class TvShow extends TmdbModel
     {
         $this->setQueryParams(['page' => $page]);
         $req = $this->createRequest('GET', $this->url . 'on_the_air', $this->params, $this->headers);
+        $response = $this->client->send($req);
+
+        return $response->json();
+    }
+
+    public function TopRated($page) {
+        $this->setQueryParams(['page' => $page]);
+        $req = $this->createRequest('GET', $this->url . 'top_rated', $this->params, $this->headers);
         $response = $this->client->send($req);
 
         return $response->json();

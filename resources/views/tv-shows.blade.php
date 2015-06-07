@@ -9,35 +9,24 @@
             </h1>
         </div>
     </div>
-    <!-- /.row -->
 
-    <!-- Projects Row -->
     <div class="row">
-        @if(!empty($movies))
-            @foreach($movies as $movie)
+        @if(!empty($tvShows))
+            @foreach($tvShows as $tv)
                 <div class="col-md-6 portfolio-item">
-                    <a href="{{url('/movie/' . $movie['id'])}}">
-                        <?php $posterPath = (isset($movie['backdrop_path'])) ? 'http://image.tmdb.org/t/p/w500'.$movie['backdrop_path'] : ''; ?>
-                        <img class="img-responsive" src="{{$posterPath}}" alt="{{$movie['original_title']}}">
+                    <a href="{{url('/tv-shows/' . $tv['id'])}}">
+                        <?php $posterPath = (isset($tv['backdrop_path'])) ? 'http://image.tmdb.org/t/p/w500'.$tv['backdrop_path'] : asset('images/no_image.jpg'); ?>
+                        <img class="img-responsive" src="{{$posterPath}}" alt="{{$tv['original_name']}}">
                     </a>
 
                     <h3>
-                        <a href="{{url('/movie/' . $movie['id'])}}">{{$movie['original_title']}}</a>
+                        <a href="{{url('/tv-shows/' . $tv['id'])}}">{{$tv['original_name']}}</a>
                     </h3>
 
-                    <p>{{str_limit($movie['overview'], 150)}}</p>
+                    <p>{{$tv['first_air_date']}}</p>
                 </div>
             @endforeach
         @endif
-    </div>
-    <!-- /.row -->
-    <hr>
-
-    <!-- Pagination -->
-    <div class="row text-center">
-        <div class="col-lg-12">
-            {!!$movies->render()!!}
-        </div>
     </div>
     <!-- /.row -->
     <hr>
