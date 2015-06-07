@@ -215,11 +215,11 @@
                     if (response.status_code == 1) {
                         $('input[name="watchlist"]').val('false');
                         watchlistBtn.html('Remove from watchlist');
-                        watchlistBtn.removeClass('btn-warning').addClass('btn-danger');
+                        watchlistBtn.removeClass('btn-success').addClass('btn-primary');
                     } else {
                         $('input[name="watchlist"]').val('true');
                         watchlistBtn.html('Add to watchlist');
-                        watchlistBtn.removeClass('btn-danger').addClass('btn-warning');
+                        watchlistBtn.removeClass('btn-primary').addClass('btn-success');
                     }
                 })
                 .fail(function (response) {

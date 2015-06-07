@@ -18,20 +18,26 @@
 
             grid.masonry()
                 .append(html)
-                .masonry( 'appended', html);
+                .masonry('appended', html);
+        });
+
+        grid.imagesLoaded(function() {
+            grid.masonry('layout');
         });
     };
 
     $(document).ready(function () {
 
-        var movieIds = [];
+        var movieIds = []
+            ,grid = $('.grid');
         if($('#movie-ids').length > 0) {
             movieIds = JSON.parse($('#movie-ids').val());
         }
 
-        $('.grid').masonry({
-            columnWidth: 200,
-            itemSelector: '.item'
+        grid.masonry({
+            itemSelector: '.item',
+            columnWidth: '.grid-sizer',
+            percentPosition: true
         });
 
         if (movieIds.length > 0) {
@@ -44,7 +50,7 @@
                 dataType: 'json'
             })
                 .done(function (response) {
-                    populateRecommended(response.results, $('.grid'));
+                    populateRecommended(response.results, grid);
                 });
         }
 

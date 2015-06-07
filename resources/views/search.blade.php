@@ -1,5 +1,6 @@
 @extends('layout')
 @section('content')
+<div class="container">
     <div class="row form-group" style="margin-top:70px;">
         <form id="searchForm" action="{{action('MoviesController@getSearch')}}" method="post">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -15,4 +16,5 @@
         @include('partials.search-items')
     </div>
     <div id="loadImages" class="hide"></div>
+    </div>
 @endsection

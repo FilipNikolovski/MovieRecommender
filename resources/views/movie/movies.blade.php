@@ -1,5 +1,6 @@
 @extends('layout')
 @section('content')
+<div class="container">
     <!-- Page Header -->
     <div class="row">
         <div class="col-lg-12">
@@ -21,7 +22,7 @@
                     </a>
 
                     <h3>
-                        <a href="{{url('/movie/' . $movie['id'])}}">{{$movie['original_title']}}</a>
+                        <a href="{{url('/movies/' . $movie['id'])}}">{{$movie['original_title']}}</a>
                     </h3>
 
                     <p>{{str_limit($movie['overview'], 75)}}</p>
@@ -86,4 +87,5 @@
     </div>
     <!-- /.row -->
     <hr>
+    </div>
 @endsection

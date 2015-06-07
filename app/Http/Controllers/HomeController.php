@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movie;
+use App\Models\TvShow;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -28,9 +29,22 @@ class HomeController extends Controller
         $this->movie = $movie;
     }
 
-    public function getIndex(Request $request)
+    public function getIndex(Request $request, TvShow $tv)
     {
-        //TODO Create home screen
+        $upcoming = Cache::section('upcoming')->remember('upcoming', 10, function () {
+            return $this->movie->upcoming();
+        });
+
+        $onTheAir = Cache::section('latest-tv')->remember('latest-tv', 10, function () use($tv) {
+            return $tv->onTheAir();
+        });
+
+        $randomMovies = collect($upcoming['results'])->random(6);
+        $randomTv = collect($onTheAir['results'])->random(6);
+
+        return view('home')
+        ->with('randomMovies', $randomMovies)
+        ->with('randomTv', $randomTv);
     }
 
     public function getTopRated(Request $request)

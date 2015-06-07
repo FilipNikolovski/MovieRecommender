@@ -1,5 +1,6 @@
 @extends('layout')
 @section('content')
+<div class="container">
     <div style="margin-top:60px;">
         <div class="row text-center">
             <div class="col-lg-12">
@@ -122,6 +123,7 @@
             <h3><span class="label label-default">Recommended Movies</span></h3>
 
             <div id="recommended-list" class="grid">
+                <div class="grid-sizer"></div>
             </div>
 
             <div class=" row text-center">
@@ -131,4 +133,5 @@
             </div>
         </div>
     </div>
+</div>
 @endsection

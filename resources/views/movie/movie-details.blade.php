@@ -1,5 +1,6 @@
 @extends('layout')
 @section('content')
+<div class="container">
     <div class="row" style="margin-top:5px;margin-bottom:10px;padding-top:40px;">
         <div class="col-lg-12">
             <h1 class="page-header">{{$movie['original_title']}}</h1>
@@ -35,7 +36,7 @@
                     </form>
                 </div>
                 <div style="float:right;">
-                    <?php $btnStyle = ($accountStates['watchlist']) ? 'danger' : 'warning'; ?>
+                    <?php $btnStyle = ($accountStates['watchlist']) ? 'primary' : 'success'; ?>
                         <?php $flag = ($accountStates['watchlist']) ? 'false' : 'true'; ?>
                     <form method="post" action="{{action('MoviesController@postWatchlist')}}" id="watchlistForm">
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -134,6 +135,7 @@
                             height="650" frameborder="0"></iframe>
                 </div>
             </div>
+        </div>
         </div>
     @endif
 @endsection
