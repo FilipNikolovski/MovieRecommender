@@ -30,6 +30,8 @@ Route::group(['prefix' => 'movies'], function() {
 
 });
 
+Route::controller('/tv-shows', 'TvShowsController');
+
 Route::controller('/auth', 'AuthController');
 
 
