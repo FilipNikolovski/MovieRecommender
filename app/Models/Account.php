@@ -76,6 +76,32 @@ class Account extends TmdbModel
     }
 
     /**
+     * Returns a list of movies on watchlist
+     *
+     * @param int $page
+     * @return mixed|null
+     */
+    public function watchlist($page = 1)
+    {
+        if ($this->auth->check()) {
+            try {
+                $this->setQueryParams(['page' => $page]);
+                $req = $this->createRequest('GET', $this->url . '/' . session('session_id') . '/watchlist/movies',
+                    $this->params, $this->headers);
+                $response = $this->client->send($req);
+
+                return $response->json();
+            } catch (RequestException $e) {
+                session()->flush();
+
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Returns a list of rated movies
      *
      * @param int $page
@@ -180,7 +206,7 @@ class Account extends TmdbModel
                 $response = curl_exec($ch);
                 curl_close($ch);
 
-                Cache::section('favorites')->flush();
+                Cache::section('watchlist')->flush();
 
                 return $response;
             } catch (RequestException $e) {
@@ -192,4 +218,5 @@ class Account extends TmdbModel
 
         return ['status' => 'error', 'message' => 'Something went wrong'];
     }
+
 }
