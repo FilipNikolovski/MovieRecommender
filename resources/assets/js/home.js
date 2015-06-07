@@ -33,7 +33,9 @@ var populateSlick = function(slick, items, slideIndex) {
         , popular = $('#popular');
 
     $(document).ready(function () {
-
+        //focus on search
+        $("#search").focus();
+        
         //disable dragging images
         window.ondragstart = function() { return false; };
 

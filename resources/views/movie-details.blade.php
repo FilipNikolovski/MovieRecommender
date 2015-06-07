@@ -1,5 +1,6 @@
 @extends('layout')
 @section('content')
+<div class="container">
     <div class="row" style="margin-top:5px;margin-bottom:10px;padding-top:40px;">
         <div class="col-lg-12">
             <h1 class="page-header">{{$movie['original_title']}}</h1>
@@ -134,6 +135,7 @@
                             height="650" frameborder="0"></iframe>
                 </div>
             </div>
+        </div>
         </div>
     @endif
 @endsection

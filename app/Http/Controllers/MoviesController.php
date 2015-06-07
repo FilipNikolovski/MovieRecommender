@@ -15,6 +15,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class MoviesController extends Controller
 {
@@ -46,6 +47,7 @@ class MoviesController extends Controller
             $movies = new LengthAwarePaginator($nowPlaying['results'], $nowPlaying['total_results'], 20);
             $movies->setPath(url('/movies'));
         } catch (Exception $e) {
+            Log::error($e->getMessage());
             abort(404);
         }
 

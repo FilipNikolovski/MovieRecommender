@@ -1,5 +1,6 @@
 @extends('layout')
 @section('content')
+<div class="container">
     <div style="margin-top:60px;">
         <div class="row text-center">
             <div class="col-lg-12">
@@ -130,4 +131,5 @@
             </nav>
         </div>
     </div>
+</div>
 @endsection

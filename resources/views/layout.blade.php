@@ -22,8 +22,6 @@
 <!-- Navigation -->
 @include('header')
 
-<div class="container">
-
     <!--Login-->
     @include('partials.login')
     <!-- Page Content -->
@@ -32,7 +30,6 @@
     <!-- Footer -->
     @include('footer')
 
-</div>
 <!-- /.container -->
 <script>
     var url_base = '{{url()}}';
