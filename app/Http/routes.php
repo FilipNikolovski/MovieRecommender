@@ -36,13 +36,7 @@ Route::group(['prefix' => 'tv-shows'], function() {
 
     Route::get('/{id}', ['uses' => 'TvShowsController@getTvShow']);
 
-    Route::get('/{id}/similar-movies', ['uses' => 'TvShowsController@getSimilarTvShow']);
-
     Route::post('/rating', ['uses' => 'TvShowsController@postRating']);
-
-    Route::post('/favorites', ['uses' => 'TvShowsController@postFavorites']);
-
-    Route::post('/watchlist', ['uses' => 'TvShowsController@postWatchlist']);
 
 });
 

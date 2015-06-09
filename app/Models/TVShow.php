@@ -37,17 +37,6 @@ class TvShow extends TmdbModel
 
         return $response->json();
     }
-    /**
-     * Returns upcoming movies with paginated results
-     * @return mixed
-     */
-    public function latest()
-    {
-        $req = $this->createRequest('GET', $this->url . 'latest', $this->params, $this->headers);
-        $response = $this->client->send($req);
-
-        return $response->json();
-    }
 
     /**
      * Returns upcoming movies with paginated results
@@ -70,5 +59,36 @@ class TvShow extends TmdbModel
         $response = $this->client->send($req);
 
         return $response->json();
+    }
+
+    public function rateTvShow($score, $id) {
+        try {
+            $ch = curl_init();
+
+            curl_setopt($ch, CURLOPT_URL, $this->url . $id . '/rating?api_key=' . $this->API_KEY . '&session_id=' . session('session_id'));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HEADER, false);
+
+            curl_setopt($ch, CURLOPT_POST, true);
+
+            $value = floor($score * 2) / 2;
+            curl_setopt($ch, CURLOPT_POSTFIELDS, "{
+                    \"value\": ". $value ."
+                }");
+
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "Accept: application/json",
+                "Content-Type: application/json"
+            ));
+
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            return $response;
+        }
+        catch(RequestException $e) {
+            Log::error($e->getMessage() . '\nLine:' . $e->getLine() . '\nStack Trace:' . $e->getTraceAsString());
+            return false;
+        }
     }
 }

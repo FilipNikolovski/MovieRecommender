@@ -73,4 +73,16 @@ class TvShowsController extends Controller
             ->with('videos', $data['videos'])
             ->with('accountStates', $accountStates);
     }
+
+    public function postRating(Request $request)
+    {
+        $this->middleware('auth');
+        $result = $this->tvShow->rateTvShow($request->get('score'), $request->get('tvShow_id'));
+        
+        if ($request->ajax()) {
+            return response($result, 200);
+        }
+
+        return redirect()->back();
+    }
 }

@@ -28,7 +28,7 @@
                         <?php $flag = ($accountStates['favorite']) ? 'false' : 'true'; ?>
                         <form method="post" action="{{action('MoviesController@postFavorites')}}" id="favoritesForm">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
-                            <input type="hidden" name="media_type" value="tvShow">
+                            <input type="hidden" name="media_type" value="tv">
                             <input type="hidden" name="media_id" value="{{$tvShow['id']}}">
                             <input type="hidden" name="favorite" value="{{$flag}}">
                             <button type="submit" id="add-to-favorite"
@@ -40,7 +40,7 @@
                             <?php $flag = ($accountStates['watchlist']) ? 'false' : 'true'; ?>
                         <form method="post" action="{{action('MoviesController@postWatchlist')}}" id="watchlistForm">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
-                            <input type="hidden" name="media_type" value="tvShow">
+                            <input type="hidden" name="media_type" value="tv">
                             <input type="hidden" name="media_id" value="{{$tvShow['id']}}">
                             <input type="hidden" name="watchlist" value="{{$flag}}">
                             <button type="submit" id="add-to-watchlist"
@@ -56,7 +56,7 @@
                         <h4>Seasons: <span class="label label-info">{{$tvShow['number_of_seasons']}}</span></h4>
                     </div>
                     <div class="col-lg-4 col-md-7 col-xs-7">
-                        <h4>Episodes: <span class="label label-info">{{$tvShow['number_of_episodes']}}</span></h4>
+                        <h4>Episodes: <span class="label label-info"><?php echo ($tvShow['number_of_episodes'] > 0) ? $tvShow['number_of_episodes'] : '/'?></span></h4>
                     </div>
                     <div class="col-lg-4 col-md-7 col-xs-7">
                         <h4>Popularity: <span class="label label-danger">{{number_format($tvShow['popularity'], 1) }}</span></h4>
@@ -68,6 +68,9 @@
                     </div>
                     <div class="col-lg-4 col-md-7 col-xs-7">
                         <h4>Last Air Date: <span class="label label-success">{{$tvShow['last_air_date']}}</span></h4>
+                    </div>
+                     <div class="col-lg-4 col-md-7 col-xs-7">
+                        <h4>Vote Average: <span class="label label-danger">{{$tvShow['vote_average']}}</span></h4>
                     </div>
                 </div>
             </div>
@@ -91,25 +94,23 @@
                     <span>There are no genres for this movie</span>
                 @endif
             </div>
-
-            <div class="row" style="margin-top:5px;margin-bottom:10px;padding-top:40px;">
-                <div class="col-lg-12">
-                    <h2 class="page-header">Similar movies:</h2>
+        </div>
+        <div class="row" style="margin-top:5px;margin-bottom:10px;padding-top:40px;">
+            <div class="col-lg-12">
+                <h2 class="page-header">Seasons:</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                @foreach($tvShow['seasons'] as $season)
+                <div class="col-lg-3">
+                    <?php $imgSrc = (isset($season['poster_path'])) ? 'http://image.tmdb.org/t/p/w500' . $season['poster_path'] : asset('images/no_image.jpg'); ?>
+                    <img class="img-responsive imgTv" src="{{$imgSrc}}" title="Season {{$season['season_number']}}"/>
+                </div>
+                @endforeach
                 </div>
             </div>
-            <div class="row text-center">
-                <div class="col-lg-12" id="similar-movies">
-                    <div class="list-item animated infinite pulse">
-                    </div>
-                    <div class="list-item animated infinite pulse">
-                    </div>
-                    <div class="list-item animated infinite pulse">
-                    </div>
-                    <div class="list-item animated infinite pulse">
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 @endsection
