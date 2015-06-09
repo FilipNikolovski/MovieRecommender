@@ -225,6 +225,7 @@ class Account extends TmdbModel
                 curl_close($ch);
 
                 Cache::section('favorites')->flush();
+                Cache::section('favorites-tv-shows')->flush();
 
                 return $response;
             } catch (RequestException $e) {
@@ -271,6 +272,7 @@ class Account extends TmdbModel
                 curl_close($ch);
 
                 Cache::section('watchlist')->flush();
+                Cache::section('watchlist-tv-shows')->flush();
 
                 return $response;
             } catch (RequestException $e) {

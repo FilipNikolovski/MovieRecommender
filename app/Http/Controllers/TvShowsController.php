@@ -31,7 +31,7 @@ class TvShowsController extends Controller
             $key = (isset($page)) ? 'top_rated-' . $page : 'top_rated';
 
             $topRated = Cache::section('top_rated')->remember($key, 10, function () use ($page) {
-                return $this->tvShow->TopRated($page);
+                return $this->tvShow->topRated($page);
             });
 
             $tvShows = new LengthAwarePaginator($topRated['results'], $topRated['total_results'], 20);

@@ -130,4 +130,34 @@ class AccountController extends Controller
 
         return view('partials.account-watchlist')->with('watchlist', $movies);
     }
+
+    public function getFavoritesTv(Request $request)
+    {
+        $page = $request->get('page');
+        $page = (isset($page)) ? $page : 1;
+        $key = (isset($page)) ? 'favorites-tv-shows-' . $page : 'favorites-tv-shows';
+        $favorites = Cache::section('favorites-tv-shows')->remember($key, 10, function () use($page) {
+            return $this->account->favoriteMovies($page);
+        });
+
+        $movies = new LengthAwarePaginator($favorites['results'], $favorites['total_results'], 20);
+        $movies->setPath(url('/account/favorites-tv'));
+
+        return view('partials.account-favorites')->with('favorites', $movies);
+    }
+
+    public function getWatchlistTv(Request $request)
+    {
+        $page = $request->get('page');
+        $page = (isset($page)) ? $page : 1;
+        $key = (isset($page)) ? 'watchlist-tv-shows' . $page : 'watchlist-tv-shows';
+        $watchlist = Cache::section('watchlist-tv-shows')->remember($key, 10, function () use($page) {
+            return $this->account->watchlistMovies($page);
+        });
+
+        $movies = new LengthAwarePaginator($watchlist['results'], $watchlist['total_results'], 20);
+        $movies->setPath(url('/account/watchlist-tv'));
+
+        return view('partials.account-watchlist')->with('watchlist', $movies);
+    }
 }

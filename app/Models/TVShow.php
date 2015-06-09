@@ -53,7 +53,7 @@ class TvShow extends TmdbModel
         return $response->json();
     }
 
-    public function TopRated($page) {
+    public function topRated($page) {
         $this->setQueryParams(['page' => $page]);
         $req = $this->createRequest('GET', $this->url . 'top_rated', $this->params, $this->headers);
         $response = $this->client->send($req);
@@ -90,5 +90,21 @@ class TvShow extends TmdbModel
             Log::error($e->getMessage() . '\nLine:' . $e->getLine() . '\nStack Trace:' . $e->getTraceAsString());
             return false;
         }
+    }
+
+    /**
+     * Check the account states for the show (has user rated, added on watchlist or added in favorites)
+     *
+     * @param $movieId
+     * @param $sessionId
+     * @return mixed
+     */
+    public function accountStates($showId, $sessionId)
+    {
+        $this->setQueryParams(['session_id' => $sessionId]);
+        $req = $this->createRequest('GET', $this->url . $showId . '/account_states', $this->params, $this->headers);
+        $response = $this->client->send($req);
+
+        return $response->json();
     }
 }
