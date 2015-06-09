@@ -104,10 +104,12 @@
             <div class="col-lg-12">
                 <div class="row">
                 @foreach($tvShow['seasons'] as $season)
-                <div class="col-lg-3">
-                    <?php $imgSrc = (isset($season['poster_path'])) ? 'http://image.tmdb.org/t/p/w500' . $season['poster_path'] : asset('images/no_image.jpg'); ?>
-                    <img class="img-responsive imgTv" src="{{$imgSrc}}" title="Season {{$season['season_number']}}"/>
-                </div>
+                    @if($season['season_number'] > 0)
+                        <div class="col-lg-3">
+                            <?php $imgSrc = (isset($season['poster_path'])) ? 'http://image.tmdb.org/t/p/w500' . $season['poster_path'] : asset('images/no_image.jpg'); ?>
+                            <img class="img-responsive imgTv" src="{{$imgSrc}}" title="Season {{$season['season_number']}}"/>
+                        </div>
+                    @endif 
                 @endforeach
                 </div>
             </div>
