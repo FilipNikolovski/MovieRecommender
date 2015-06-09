@@ -1,5 +1,6 @@
 @extends('layout')
 @section('content')
+<div class="container">
     <!-- Page Header -->
     <div class="row">
         <div class="col-lg-12">
@@ -14,14 +15,14 @@
     <div class="row">
         @if(!empty($movies))
             @foreach($movies as $movie)
-                <div class="col-md-6 portfolio-item">
+                <div class="col-md-6">
                     <a href="{{url('/movies/' . $movie['id'])}}">
                         <?php $posterPath = (isset($movie['backdrop_path'])) ? 'http://image.tmdb.org/t/p/w500'.$movie['backdrop_path'] : asset('images/no_image.jpg'); ?>
                         <img class="img-responsive" src="{{$posterPath}}" alt="{{$movie['original_title']}}">
                     </a>
 
                     <h3>
-                        <a href="{{url('/movie/' . $movie['id'])}}">{{$movie['original_title']}}</a>
+                        <a href="{{url('/movies/' . $movie['id'])}}">{{$movie['original_title']}}</a>
                     </h3>
 
                     <p>{{str_limit($movie['overview'], 75)}}</p>
@@ -86,4 +87,5 @@
     </div>
     <!-- /.row -->
     <hr>
+    </div>
 @endsection

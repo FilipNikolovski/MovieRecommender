@@ -1,46 +1,12 @@
-/**
- * Created by filip on 20.5.15.
- */
-var populateSlick = function(slick, items, slideIndex) {
-    var i = slideIndex;
-    items.map(function (item) {
-        if(i !== 0) {
-            slick.slick('slickRemove', i - 1);
-            i--;
-            slideIndex--;
-        }
-
-        var text = (item.title != undefined) ? item.title : item.name;
-        var imgSrc = (item.backdrop_path != null || item.backdrop_path != undefined) ? 'http://image.tmdb.org/t/p/w500' + item.backdrop_path : url_base + '/images/no_image.jpg';
-        var html = '<div class="list-item animated bounceIn">' +
-            '<a href="' + url_base + '/movies/' + item.id + '">' +
-            '<figure>' +
-            '<img class="img-responsive" src="' + imgSrc + '" alt="' + text + '">' +
-            '<figcaption><p>'+text+'</p></figcaption>' +
-            '</figure>' +
-            '</a>' +
-            '</div>';
-
-        slick.slick('slickAdd', html);
-        slideIndex++;
-    });
-};
-
 (function ($) {
     var topRatedIndex = 5
         , topRatedLoaded = false
-        , topRated = $('#top-rated')
+        , topRated = $('#top-rated-tv')
         , popularIndex = 5
         , popularLoaded = false
-        , popular = $('#popular');
+        , popular = $('#popular-tv');
 
     $(document).ready(function () {
-        //focus on search
-        $("#search").focus();
-        
-        //disable dragging images
-        window.ondragstart = function() { return false; };
-
         topRated.slick({
             dots: true,
             arrows: false,
@@ -107,14 +73,14 @@ var populateSlick = function(slick, items, slideIndex) {
             ]
         });
 
-        if($('#top-rated').length > 0) {
+        if($('#top-rated-tv').length > 0) {
             var topRatedWayp = new Waypoint({
-                element: document.getElementById('top-rated'),
+                element: document.getElementById('top-rated-tv'),
                 handler: function (direction) {
                     if (direction === 'down' && !topRatedLoaded) {
                         $.ajax({
                             type: 'GET',
-                            url: url_base + '/top-rated',
+                            url: url_base + '/top-rated-tv',
                             dataType: 'json'
                         })
                             .done(function (response) {
@@ -129,14 +95,14 @@ var populateSlick = function(slick, items, slideIndex) {
                 offset: '180%'
             });
         }
-        if($('#popular').length > 0) {
+        if($('#popular-tv').length > 0) {
             var popularWayp = new Waypoint({
-                element: document.getElementById('popular'),
+                element: document.getElementById('popular-tv'),
                 handler: function (direction) {
                     if (direction === 'down' && !popularLoaded) {
                         $.ajax({
                             type: 'GET',
-                            url: url_base + '/popular',
+                            url: url_base + '/popular-tv',
                             dataType: 'json'
                         })
                             .done(function (response) {
@@ -151,63 +117,6 @@ var populateSlick = function(slick, items, slideIndex) {
                 offset: '180%'
             });
         }
-
-        $("#loginForm").on('submit', function (e) {
-            e.preventDefault();
-
-            var username = this.elements['username'].value;
-            var password = this.elements['password'].value;
-            var _token = this.elements['_token'].value;
-
-            $.ajax({
-                type: 'POST',
-                url: url_base + '/auth/login',
-                data: {
-                    username: username,
-                    password: password,
-                    _token: _token
-                },
-                dataType: 'json'
-            })
-                .done(function (response) {
-                    location.reload();
-                })
-                .fail(function (xhr) {
-                    var error = xhr.responseJSON;
-
-                    console.log(error);
-
-                    var $errors = $("#errors");
-
-                    $errors.html('');
-                    for (var key in error) {
-                        if (error.hasOwnProperty(key)) {
-                            var obj = error[key];
-                            $errors.append('<p>' + obj + '</p>').hide().show('fast');
-                        }
-                    }
-                });
-        });
-
-        $('.grid-home').masonry({
-            columnWidth: '.grid-sizer-home',
-            itemSelector: '.portfolio-item',
-            percentPosition: true
-        });
-
-        $('.grid-home').imagesLoaded(function() {
-            $('.grid-home').masonry('layout');
-        });
-
-        $('.grid-home-tv').masonry({
-            columnWidth: '.grid-sizer-home',
-            itemSelector: '.portfolio-item',
-            percentPosition: true
-        });
-
-        $('.grid-home-tv').imagesLoaded(function() {
-            $('.grid-home-tv').masonry('layout');
-        });
     });
 
 })(window.jQuery);

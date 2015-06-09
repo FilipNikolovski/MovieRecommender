@@ -30,6 +30,16 @@ Route::group(['prefix' => 'movies'], function() {
 
 });
 
+Route::group(['prefix' => 'tv-shows'], function() {
+
+    Route::get('/', ['uses' => 'TvShowsController@index']);
+
+    Route::get('/{id}', ['uses' => 'TvShowsController@getTvShow']);
+
+    Route::post('/rating', ['uses' => 'TvShowsController@postRating']);
+
+});
+
 Route::controller('/auth', 'AuthController');
 
 

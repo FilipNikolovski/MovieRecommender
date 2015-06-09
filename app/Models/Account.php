@@ -59,14 +59,104 @@ class Account extends TmdbModel
     {
         if ($this->auth->check()) {
             try {
-                $this->setQueryParams(['page' => $page]);
+                $this->setQueryParams([
+                    'session_id' => session('session_id'),
+                    'page' => $page
+                ]);
                 $req = $this->createRequest('GET', $this->url . '/' . session('session_id') . '/favorite/movies',
                     $this->params, $this->headers);
                 $response = $this->client->send($req);
 
                 return $response->json();
             } catch (RequestException $e) {
-                session()->flush();
+                Log::error($e->getMessage() . '\nLine:' . $e->getLine() . '\nStack Trace:' . $e->getTraceAsString() . '\nRequest:' . $e->getRequest());
+
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns a list of movies on watchlist
+     *
+     * @param int $page
+     * @return mixed|null
+     */
+    public function watchlistMovies($page = 1)
+    {
+        if ($this->auth->check()) {
+            try {
+                $this->setQueryParams([
+                    'session_id' => session('session_id'),
+                    'page' => $page
+                ]);
+                $req = $this->createRequest('GET', $this->url . '/' . session('session_id') . '/watchlist/movies',
+                    $this->params, $this->headers);
+                $response = $this->client->send($req);
+
+                return $response->json();
+            } catch (RequestException $e) {
+                Log::error($e->getMessage() . '\nLine:' . $e->getLine() . '\nStack Trace:' . $e->getTraceAsString() . '\nRequest:' . $e->getRequest());
+
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns a list of favorite movies
+     *
+     * @param int $page
+     * @return mixed|null
+     */
+    public function favoriteTv($page = 1)
+    {
+        if ($this->auth->check()) {
+            try {
+                $this->setQueryParams([
+                    'session_id' => session('session_id'),
+                    'page' => $page
+                ]);
+                $req = $this->createRequest('GET', $this->url . '/' . session('session_id') . '/favorite/tv',
+                    $this->params, $this->headers);
+                $response = $this->client->send($req);
+
+                return $response->json();
+            } catch (RequestException $e) {
+                Log::error($e->getMessage() . '\nLine:' . $e->getLine() . '\nStack Trace:' . $e->getTraceAsString() . '\nRequest:' . $e->getRequest());
+
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns a list of movies on watchlist
+     *
+     * @param int $page
+     * @return mixed|null
+     */
+    public function watchlistTv($page = 1)
+    {
+        if ($this->auth->check()) {
+            try {
+                $this->setQueryParams([
+                    'session_id' => session('session_id'),
+                    'page' => $page
+                ]);
+                $req = $this->createRequest('GET', $this->url . '/' . session('session_id') . '/watchlist/tv',
+                    $this->params, $this->headers);
+                $response = $this->client->send($req);
+
+                return $response->json();
+            } catch (RequestException $e) {
+                Log::error($e->getMessage() . '\nLine:' . $e->getLine() . '\nStack Trace:' . $e->getTraceAsString() . '\nRequest:' . $e->getRequest());
 
                 return null;
             }
@@ -135,6 +225,7 @@ class Account extends TmdbModel
                 curl_close($ch);
 
                 Cache::section('favorites')->flush();
+                Cache::section('favorites-tv-shows')->flush();
 
                 return $response;
             } catch (RequestException $e) {
@@ -180,7 +271,8 @@ class Account extends TmdbModel
                 $response = curl_exec($ch);
                 curl_close($ch);
 
-                Cache::section('favorites')->flush();
+                Cache::section('watchlist')->flush();
+                Cache::section('watchlist-tv-shows')->flush();
 
                 return $response;
             } catch (RequestException $e) {
@@ -192,4 +284,5 @@ class Account extends TmdbModel
 
         return ['status' => 'error', 'message' => 'Something went wrong'];
     }
+
 }
