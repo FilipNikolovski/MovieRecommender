@@ -13,7 +13,7 @@
         </form>
     </div>
     <div class="row <?php if(empty($movies['results'])) echo 'hide'; ?>" id="search-list">
-        @include('partials.search-items')
+        @include('partials.search-movie-items')
     </div>
     <div id="loadImages" class="hide"></div>
     </div>

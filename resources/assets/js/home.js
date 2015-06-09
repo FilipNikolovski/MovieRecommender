@@ -185,7 +185,18 @@ var populateSlick = function(slick, items, slideIndex) {
                         }
                     }
                 });
+        });
 
+        $('.grid-home').masonry({
+            columnWidth: '.grid-sizer-home',
+            itemSelector: '.portfolio-item',
+            percentPosition: true
+        });
+
+        $('.grid-home-tv').masonry({
+            columnWidth: '.grid-sizer-home',
+            itemSelector: '.portfolio-item',
+            percentPosition: true
         });
     });
 

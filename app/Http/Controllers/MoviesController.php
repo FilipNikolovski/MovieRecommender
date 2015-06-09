@@ -144,7 +144,7 @@ class MoviesController extends Controller
             $page = (isset($page)) ? $page : 1;
             $movies = $this->movie->search($request->get('search'), $page);
 
-            return view('partials.search-items')->with('movies', $movies);
+            return view('partials.search-movie-items')->with('movies', $movies);
         }
 
         $query = $request->get('search');

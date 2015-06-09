@@ -38,6 +38,9 @@
                         <li>
                             <a href="{{url('/account')}}">Account</a>
                         </li>
+                        <li>
+                            <a href="{{url('auth/logout')}}">Logout</a>
+                        </li>
                     @endif
                 </ul>
             </div>

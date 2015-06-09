@@ -3,8 +3,6 @@
  */
 (function ($) {
 
-    var current = 1;
-
     var populateRecommended = function (movies, grid) {
         var html = ''
             , imgSrc = '';
@@ -13,7 +11,7 @@
 
             html = $('<div class="item">' +
             '<a href="' + url_base + "/movies/" + item.id + '">' +
-            '<img class="img-responsive" src="' + imgSrc + '" alt="' + item.title + '">' +
+            '<img class="img-responsive" src="' + imgSrc + '" title="' + item.title + '">' +
             '</a></div>');
 
             grid.masonry()
@@ -29,7 +27,9 @@
     $(document).ready(function () {
 
         var movieIds = []
-            ,grid = $('.grid');
+            , current = 1
+            , grid = $('.grid');
+
         if($('#movie-ids').length > 0) {
             movieIds = JSON.parse($('#movie-ids').val());
         }
@@ -67,6 +67,37 @@
                     .done(function (response) {
                         current++;
                         populateRecommended(response.results, $('.grid'));
+                    });
+            }
+        });
+
+        $('#favorites-pagination a').on('click', function (event) {
+            event.preventDefault();
+            if ( $(this).attr('href') != '#' ) {
+                $.ajax({
+                    type: 'GET',
+                    url: $(this).attr('href'),
+                    dataType: 'html'
+                })
+                    .done(function(response) {
+                        favoritesPage++;
+                        $('#favorites-pagination').html(response);
+                    });
+            }
+        });
+
+        $('#watchlist-pagination a').on('click', function (event) {
+            event.preventDefault();
+            if ( $(this).attr('href') != '#' ) {
+                $.ajax({
+                    type: 'GET',
+                    url: $(this).attr('href'),
+
+                    dataType: 'html'
+                })
+                    .done(function(response) {
+                        watchlistPage++;
+                        $('#watchlist-pagination').html(response);
                     });
             }
         });

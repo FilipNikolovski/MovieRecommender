@@ -13,7 +13,7 @@
     <div class="row">
         @if(!empty($tvShows))
             @foreach($tvShows as $tv)
-                <div class="col-md-6 portfolio-item">
+                <div class="col-md-6">
                     <a href="{{url('/tv-shows/' . $tv['id'])}}">
                         <?php $posterPath = (isset($tv['backdrop_path'])) ? 'http://image.tmdb.org/t/p/w500'.$tv['backdrop_path'] : asset('images/no_image.jpg'); ?>
                         <img class="img-responsive" src="{{$posterPath}}" alt="{{$tv['original_name']}}">
@@ -29,8 +29,14 @@
         @endif
     </div>
     <!-- /.row -->
-    <hr>
 
+    <!-- Pagination -->
+    <div class="row text-center">
+        <div class="col-lg-12">
+            {!!$tvShows->render()!!}
+        </div>
+    </div>
+    <hr>
     <!-- Latest TV Shows-->
     <div class="row">
         <div class="col-lg-12">
