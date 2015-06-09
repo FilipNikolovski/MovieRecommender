@@ -22,11 +22,18 @@ class HomeController extends Controller
      */
     protected $movie;
 
-    public function __construct(Movie $movie)
+    /**
+     * @var Movie
+     */
+    protected $tvShow;
+
+    public function __construct(Movie $movie, TvShow $tvShow)
     {
         parent::__construct();
 
         $this->movie = $movie;
+
+        $this->tvShow = $tvShow;
     }
 
     public function getIndex(Request $request, TvShow $tv)
@@ -70,6 +77,39 @@ class HomeController extends Controller
             try {
                 $popular = Cache::section('popular')->remember('popular', 10, function () {
                     return $this->movie->popular();
+                });
+
+                return response()->json($popular['results'], 200);
+            } catch (Exception $e) {
+                abort(500);
+            }
+        }
+        abort(401);
+    }
+
+    public function getTopRatedTv(Request $request)
+    {
+        if ($request->ajax()) {
+            try {
+
+                $topRated = Cache::section('top-rated-tv')->remember('top-rated-tv', 10, function () {
+                    return $this->tvShow->topRated();
+                });
+
+                return response()->json($topRated['results'], 200);
+            } catch (Exception $e) {
+                abort(500);
+            }
+        }
+        abort(401);
+    }
+
+    public function getPopularTv(Request $request)
+    {
+        if ($request->ajax()) {
+            try {
+                $popular = Cache::section('popular-tv')->remember('popular-tv', 10, function () {
+                    return $this->tvShow->popular();
                 });
 
                 return response()->json($popular['results'], 200);

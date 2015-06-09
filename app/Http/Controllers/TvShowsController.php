@@ -77,7 +77,7 @@ class TvShowsController extends Controller
     public function postRating(Request $request)
     {
         $this->middleware('auth');
-        $result = $this->tvShow->rateTvShow($request->get('score'), $request->get('tvShow_id'));
+        $result = $this->tvShow->rateTvShow($request->get('score'), $request->get('tv_id'));
         
         if ($request->ajax()) {
             return response($result, 200);

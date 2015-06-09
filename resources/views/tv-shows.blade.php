@@ -46,7 +46,7 @@
         </div>
     </div>
     <div class="row text-center">
-        <div class="col-lg-12" id="top-rated">
+        <div class="col-lg-12" id="top-rated-tv">
             <div class="list-item animated infinite pulse">
             </div>
             <div class="list-item animated infinite pulse">
@@ -69,7 +69,7 @@
         </div>
     </div>
     <div class="row text-center">
-        <div class="col-lg-12" id="popular">
+        <div class="col-lg-12" id="popular-tv">
             <div class="list-item animated infinite pulse">
             </div>
             <div class="list-item animated infinite pulse">

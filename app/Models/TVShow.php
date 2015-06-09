@@ -53,9 +53,24 @@ class TvShow extends TmdbModel
         return $response->json();
     }
 
-    public function topRated($page) {
+    public function topRated($page = 1) {
         $this->setQueryParams(['page' => $page]);
         $req = $this->createRequest('GET', $this->url . 'top_rated', $this->params, $this->headers);
+        $response = $this->client->send($req);
+
+        return $response->json();
+    }
+
+    /**
+     * Returns popular tv shows with paginated results
+     *
+     * @param int $page
+     * @return mixed
+     */
+    public function popular($page = 1)
+    {
+        $this->setQueryParams(['page' => $page]);
+        $req = $this->createRequest('GET', $this->url . 'popular', $this->params, $this->headers);
         $response = $this->client->send($req);
 
         return $response->json();

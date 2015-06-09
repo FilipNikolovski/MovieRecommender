@@ -9,12 +9,14 @@ var populateSlick = function(slick, items, slideIndex) {
             i--;
             slideIndex--;
         }
+
+        var text = (item.title != undefined) ? item.title : item.name;
         var imgSrc = (item.backdrop_path != null || item.backdrop_path != undefined) ? 'http://image.tmdb.org/t/p/w500' + item.backdrop_path : url_base + '/images/no_image.jpg';
         var html = '<div class="list-item animated bounceIn">' +
             '<a href="' + url_base + '/movies/' + item.id + '">' +
             '<figure>' +
-            '<img class="img-responsive" src="' + imgSrc + '" alt="' + item.title + '">' +
-            '<figcaption><p>'+item.title+'</p></figcaption>' +
+            '<img class="img-responsive" src="' + imgSrc + '" alt="' + text + '">' +
+            '<figcaption><p>'+text+'</p></figcaption>' +
             '</figure>' +
             '</a>' +
             '</div>';
@@ -193,10 +195,18 @@ var populateSlick = function(slick, items, slideIndex) {
             percentPosition: true
         });
 
+        $('.grid-home').imagesLoaded(function() {
+            $('.grid-home').masonry('layout');
+        });
+
         $('.grid-home-tv').masonry({
             columnWidth: '.grid-sizer-home',
             itemSelector: '.portfolio-item',
             percentPosition: true
+        });
+
+        $('.grid-home-tv').imagesLoaded(function() {
+            $('.grid-home-tv').masonry('layout');
         });
     });
 
